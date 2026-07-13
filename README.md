@@ -5,10 +5,30 @@ fact's proof bundle and the raw captured bytes, `bixel-verify` checks the
 whole chain of custody with standard cryptography, offline, with zero
 requests to bixel.com. You should not have to trust Bixel to check Bixel.
 
-> **Status: pre-release.** The verifier ships alongside Bixel's per-fact
-> proof endpoint. This repository is its permanent home; the specification
-> below is the contract the tool is being built against, published first so
-> it can be reviewed before code exists to defend it.
+> **Status: the proof endpoint is live; the verifier CLI is being built
+> against it.** Every fact on a Bixel record can produce its bundle today
+> (see below), and every check in the contract can be reproduced with
+> standard tooling — the CLI packages those steps, it does not gatekeep
+> them. This repository is the tool's permanent home.
+
+## Getting a proof bundle
+
+```
+GET https://api.bixel.com/v1/companies/{domain}/facts/{key}/proof
+```
+
+Open tier, no key. Example:
+
+```
+curl https://api.bixel.com/v1/companies/pinecone.io/facts/pricing.model/proof/
+```
+
+The bundle carries the fact, its capture reference (content-addressed
+SHA-256), the merkle inclusion path, and the anchoring meta record plus its
+OpenTimestamps proof (both base64-embedded), so steps 2–4 below verify
+offline from the bundle alone. Facts derived from live network signals with
+no stored capture behind them answer `proof_not_available` instead of
+pretending.
 
 ## What Bixel publishes
 
@@ -22,7 +42,10 @@ HTML. The trust layer underneath:
 - **Hash-chained manifests.** Each export lists every capture (id, sha256,
   URL, timestamp) and writes a meta record carrying the manifest hashes plus
   the previous meta's key and hash. Rewriting any historical record breaks
-  every later link.
+  every later link. Each manifest entry also carries a merkle root over its
+  rows (construction named in the meta: `rfc6962-sha256/csv-data-rows-v1`,
+  RFC 6962 with SHA-256), so proving one capture's inclusion takes a
+  logarithmic hash path instead of the whole manifest.
 - **OpenTimestamps proofs anchored in the Bitcoin blockchain.** Each meta's
   hash is committed through the OpenTimestamps calendar network into a
   Bitcoin block. Proof-of-work makes the commitment practically impossible
@@ -31,7 +54,7 @@ HTML. The trust layer underneath:
 
 ## What a verification run checks
 
-Input: a proof bundle (from Bixel's per-fact proof endpoint) and the raw bytes.
+Input: a proof bundle (from the endpoint above) and the raw bytes.
 
 1. **Content.** SHA-256 of the raw bytes equals the capture's recorded
    hash. You now hold the exact document Bixel captured.
