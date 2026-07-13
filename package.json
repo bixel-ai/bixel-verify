@@ -1,0 +1,14 @@
+{
+  "name": "bixel-verify",
+  "version": "0.1.0",
+  "description": "Independent verifier for Bixel's evidence chain: content, merkle inclusion, hash chain, and OpenTimestamps anchoring in the Bitcoin blockchain.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": { "bixel-verify": "bin/bixel-verify.mjs" },
+  "files": ["bin", "test/vectors", "README.md", "LICENSE"],
+  "engines": { "node": ">=18" },
+  "optionalDependencies": { "opentimestamps": "^0.4.9" },
+  "scripts": { "test": "node bin/bixel-verify.mjs --self-test" },
+  "repository": { "type": "git", "url": "https://github.com/bixel-ai/bixel-verify" },
+  "homepage": "https://bixel.com"
+}

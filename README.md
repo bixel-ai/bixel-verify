@@ -5,11 +5,31 @@ fact's proof bundle and the raw captured bytes, `bixel-verify` checks the
 whole chain of custody with standard cryptography, offline, with zero
 requests to bixel.com. You should not have to trust Bixel to check Bixel.
 
-> **Status: the proof endpoint is live; the verifier CLI is being built
-> against it.** Every fact on a Bixel record can produce its bundle today
-> (see below), and every check in the contract can be reproduced with
-> standard tooling — the CLI packages those steps, it does not gatekeep
-> them. This repository is the tool's permanent home.
+> **Status: working.** The proof endpoint is live and this CLI verifies
+> its bundles. Zero runtime dependencies for steps 1–3; step 4's full
+> Bitcoin verification uses the standard `opentimestamps` package
+> (optional — without it the tool still confirms the proof's commitment
+> and tells you how to finish the check).
+
+## Usage
+
+```
+# verify a bundle straight from the API
+curl -s https://api.bixel.com/v1/companies/pinecone.io/facts/pricing.model/proof/ \
+  | npx bixel-verify -
+
+# with the raw captured bytes (completes step 1)
+npx bixel-verify bundle.json --raw capture.html.gz
+
+# fully offline (skips the OpenTimestamps network check)
+npx bixel-verify bundle.json --skip-anchor
+
+# pinned real-world vectors, offline
+npx bixel-verify --self-test
+```
+
+Exit code 0 = every executed check held. The output labels each step and
+ends with the exact claim the proof supports — nothing more.
 
 ## Getting a proof bundle
 

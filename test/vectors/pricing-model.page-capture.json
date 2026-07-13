@@ -1,0 +1,95 @@
+{
+    "data": {
+        "fact": {
+            "dimension": "pricing",
+            "key": "pricing.model",
+            "value": "hybrid",
+            "unit": null,
+            "provenance": "company_stated",
+            "confidence": 1,
+            "as_of": "2026-07-13",
+            "source_url": "https://www.pinecone.io/pricing/",
+            "capture_id": null,
+            "product": null,
+            "extractor_version": "v1"
+        },
+        "capture": {
+            "kind": "page_capture",
+            "id": "3db1e006-c9d0-47b1-b49d-9aae66eebce7",
+            "captured_at": "2026-07-13T12:08:27.299+00:00",
+            "source_url": "https://www.pinecone.io/pricing/",
+            "sha256": "57d370929e6c82b943620354553b221042eb81552477c1a6b042d618a9e4e46c",
+            "raw": {
+                "key": "raw/57d370929e6c82b943620354553b221042eb81552477c1a6b042d618a9e4e46c.html.gz",
+                "hash_rule": "sha256 over the gunzipped UTF-8 bytes"
+            }
+        },
+        "inclusion_proof": {
+            "merkle_spec": "rfc6962-sha256/csv-data-rows-v1",
+            "manifest_key": "manifests/page-captures-2026-07-13.csv.gz",
+            "manifest_sha256": "bd49966bb47f59229190194b6c893af397cf3ce67827912e7c96740be04300ff",
+            "leaf": "3db1e006-c9d0-47b1-b49d-9aae66eebce7,raw/57d370929e6c82b943620354553b221042eb81552477c1a6b042d618a9e4e46c.html.gz,57d370929e6c82b943620354553b221042eb81552477c1a6b042d618a9e4e46c,286081,pinecone.io,https://www.pinecone.io/pricing/,2026-07-13T12:08:27.299+00:00,live",
+            "leaf_index": 275,
+            "path": [
+                {
+                    "sibling": "41989ffd1d5edf237e611f1997038ff309156ce0ccda5e2019c1a7a048956501",
+                    "side": "left"
+                },
+                {
+                    "sibling": "7a65b3cc5a404625248c04582de6a588828051ccfe832adaf5c760ce3fb2dc6e",
+                    "side": "left"
+                },
+                {
+                    "sibling": "9b5e8d91c1223af4a69edc55141145174220a61a32ba621ab8e9c24a1b8333a1",
+                    "side": "right"
+                },
+                {
+                    "sibling": "fe53f6c95491abe0cb70f3fb8c1151615dc61350c4cc0b4e03f686af43cd6f68",
+                    "side": "right"
+                },
+                {
+                    "sibling": "deab140123cdd854bb7b328be3387e5e2ce56e1ef9841dad387d401a2e63a128",
+                    "side": "left"
+                },
+                {
+                    "sibling": "525d4a06712fcc518eea74260ab6aa52ad2875ea0dd460bba174f074b715f2de",
+                    "side": "right"
+                },
+                {
+                    "sibling": "d20020ffe3ed5d5b0cf81a74f5a459a40c3efd2fac2d4f46be8381bc09f82422",
+                    "side": "right"
+                },
+                {
+                    "sibling": "124dcf86d9e9fded79adde49de1113b00f7a4df954f73632c9078e81bcf8aadc",
+                    "side": "right"
+                },
+                {
+                    "sibling": "8749e4148de83edc4ed908f02e5aba029362b04fd8f2a2b1af7333bfa9b39b71",
+                    "side": "left"
+                },
+                {
+                    "sibling": "2b4bd805e0cbd319b0d7575392d9f668c51317c9a38e480b3e0d30fa268c6619",
+                    "side": "right"
+                },
+                {
+                    "sibling": "57d378c33b2cce65e979a796ec7df1d9a35a54e3c68ce02c14a59a149b793dfe",
+                    "side": "right"
+                }
+            ],
+            "merkle_root": "7a338d874fb519ecef71d0e35c2e7ab9a307ffa86ac9ff1f69f816a50169b4f4"
+        },
+        "anchor": {
+            "meta_key": "manifests/raw-manifests-2026-07-13.meta.json",
+            "meta_b64": "ewogICJ2ZXJzaW9uIjogMywKICAibWVya2xlX3NwZWMiOiAicmZjNjk2Mi1zaGEyNTYvY3N2LWRhdGEtcm93cy12MSIsCiAgIm1hbmlmZXN0cyI6IFsKICAgIHsKICAgICAgInRhYmxlIjogImNyYXdsX3NuYXBzaG90cyIsCiAgICAgICJtYW5pZmVzdF9rZXkiOiAibWFuaWZlc3RzL2NyYXdsLXNuYXBzaG90cy0yMDI2LTA3LTEzLmNzdi5neiIsCiAgICAgICJtYW5pZmVzdF9zaGEyNTYiOiAiNDQwYzkxODQ0YzAyMDMwOTVlNWQyMTE2MWYzMWMzOGNlMGE0NGVkMmIzZDVmMzEwMTU5ZDg5MmFkZDA4NDBkOSIsCiAgICAgICJtZXJrbGVfcm9vdCI6ICJkNjhlNjkyOTczNDA4MTgyZjc3NDZlMjI3NTFjNzdmNGI5MWM2MGFmZDA2NjlkOWNjYzhiMjhlYWVlYWI2MTYyIiwKICAgICAgInJvd19jb3VudCI6IDQ5MQogICAgfSwKICAgIHsKICAgICAgInRhYmxlIjogInBhZ2VfY2FwdHVyZXMiLAogICAgICAibWFuaWZlc3Rfa2V5IjogIm1hbmlmZXN0cy9wYWdlLWNhcHR1cmVzLTIwMjYtMDctMTMuY3N2Lmd6IiwKICAgICAgIm1hbmlmZXN0X3NoYTI1NiI6ICJiZDQ5OTY2YmI0N2Y1OTIyOTE5MDE5NGI2Yzg5M2FmMzk3Y2YzY2U2NzgyNzkxMmU3Yzk2NzQwYmUwNDMwMGZmIiwKICAgICAgIm1lcmtsZV9yb290IjogIjdhMzM4ZDg3NGZiNTE5ZWNlZjcxZDBlMzVjMmU3YWI5YTMwN2ZmYTg2YWM5ZmYxZjY5ZjgxNmE1MDE2OWI0ZjQiLAogICAgICAicm93X2NvdW50IjogMTE4MAogICAgfSwKICAgIHsKICAgICAgInRhYmxlIjogImF0c19jYXB0dXJlcyIsCiAgICAgICJtYW5pZmVzdF9rZXkiOiAibWFuaWZlc3RzL2F0cy1jYXB0dXJlcy0yMDI2LTA3LTEzLmNzdi5neiIsCiAgICAgICJtYW5pZmVzdF9zaGEyNTYiOiAiM2JjYjhiYWY3ZjdhMjYwZWRmNTk4ZDg0OTNmMjM1MDU0ZGUyMTU0OWFkZGE2MmJkN2FlMzI3YWRiZjg5MDlkYyIsCiAgICAgICJtZXJrbGVfcm9vdCI6ICJkZjk3MGEyODAxZTQxODEwZTBlYmIzNGU0NWYwYmZiZmI4NGU1NjNmODBlZmViMjQ3N2JhNWZkMmU4YTNjMzkyIiwKICAgICAgInJvd19jb3VudCI6IDQ4CiAgICB9CiAgXSwKICAiY3JlYXRlZF9hdCI6ICIyMDI2LTA3LTEzVDE1OjI1OjUwLjUzN1oiLAogICJwcmV2aW91c19tZXRhX2tleSI6ICJtYW5pZmVzdHMvY3Jhd2wtc25hcHNob3RzLTIwMjYtMDYtMTAubWV0YS5qc29uIiwKICAicHJldmlvdXNfbWV0YV9zaGEyNTYiOiAiODM2YjRmMTRjYWM5ZTkyZWM2MWJhZGNiMzAyMWZiYmRhNzEwNTExMDdhZDU3MzYxZmVjMzJhZGZkODExYzRmMyIsCiAgInByZXZpb3VzX21hbmlmZXN0X3NoYTI1NiI6ICIzMjA5ZDM5MmRiNGVkOGVhMDY0NmRlNTQyNjUwMTVmMjcwMTU2NzZiNDllNWE0MDUxMTAwOWFmODdmZTI0Yjg4Igp9",
+            "ots_key": "manifests/raw-manifests-2026-07-13.meta.json.ots",
+            "ots_b64": "AE9wZW5UaW1lc3RhbXBzAABQcm9vZgC/ieLohOiSlAEIPsICxBL0j6QaOJ+yLCIbS3yAwEllUUqtbFBMcr83nTXwELwG4yCphkIMo9M8j+KWnmUI//AIG/qI/TlCGO8I8SBAe7OjjqkX7hriJW0k9vsq0ph3Vgo1UKqEHOJ8IhsjfQjwEKUU2YiocKwmpItvH35PIXgI8SBhyPXFs9JuQSQFqjD1d/t+j/oy1/+vYV/KJpqkF35brgjxIEXDOw/LEhpj5/ib067vGQBJzJL26EG7p6GQjEpMFohGCPEEalUDf/AIBzzUo4HNFEQAg9/jDS75DI4uLWh0dHBzOi8vYWxpY2UuYnRjLmNhbGVuZGFyLm9wZW50aW1lc3RhbXBzLm9yZ//wCDt/FtuPr3FrCPAQu+GXMSXaMAkZBRyecKn78wjxIMd5yNQoKC/wxGMCVQr0ImLL3+k7+tJJVI8X6KN/qSMtCPAgnB2KiMZjED2pFVikkEQzAS/yGN9opjVCVZHy1cD0IJMI8QRqVQOA8AhRJQCvaoZh1gCD3+MNLvkMjiwraHR0cHM6Ly9ib2IuYnRjLmNhbGVuZGFyLm9wZW50aW1lc3RhbXBzLm9yZ//wEDz73s3mZo2U1Ji5g2xlaaII8SDu6NywoOBumO2pCeMQt/MSDB9TypQkKGsTnNp0Ax7gigjxINGLyYW6HL0EcAftabnan//TtzKp9VDxrZiClpyE5CSvCPEEalUDf/AIB78voL8LY9UAg9/jDS75DI4pKGh0dHBzOi8vZmlubmV5LmNhbGVuZGFyLmV0ZXJuaXR5d2FsbC5jb23wEM+LBGwFqJvmdUiNmwLRm5cI8SBx4JPAx7grFFGS6xA6aE7B6v8cABmXgaJ825J7r6bOwAjxBGpVA3/wCBBiajAdMiw3AIPf4w0u+QyOIyJodHRwczovL2J0Yy5jYWxlbmRhci5jYXRhbGxheHkuY29t",
+            "anchored_at": "2026-07-13T15:25:50.537Z",
+            "previous_meta_key": "manifests/crawl-snapshots-2026-06-10.meta.json"
+        },
+        "attests": "This proof attests that the referenced raw content was observed by Bixel at the recorded time and is included in a hash-chained batch anchored in the Bitcoin blockchain via OpenTimestamps. It does not attest that Bixel's structured extraction of that content is correct; the raw bytes are pointed at so you can read the source yourself.",
+        "verify_with": "https://github.com/bixel-ai/bixel-verify"
+    },
+    "meta": {
+        "generated_at": "2026-07-13T19:37:11.069Z"
+    }
+}
