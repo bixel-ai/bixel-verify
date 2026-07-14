@@ -63,9 +63,17 @@ HTML. The trust layer underneath:
   URL, timestamp) and writes a meta record carrying the manifest hashes plus
   the previous meta's key and hash. Rewriting any historical record breaks
   every later link. Each manifest entry also carries a merkle root over its
-  rows (construction named in the meta: `rfc6962-sha256/csv-data-rows-v1`,
-  RFC 6962 with SHA-256), so proving one capture's inclusion takes a
-  logarithmic hash path instead of the whole manifest.
+  rows (construction named in the meta; RFC 6962 with SHA-256), so proving
+  one capture's inclusion takes a short hash path instead of the whole
+  manifest. Two constructions exist:
+  - `rfc6962-sha256/csv-data-rows-v1` (bundles before 2026-07-14): leaves
+    are the manifest CSV's data rows in file order; path length ~log2(rows).
+  - `rfc6962-sha256/csv-data-rows-v2` (current): the same tree, but the
+    leaf set is padded with copies of the literal string `bixel:pad:v2`
+    (never a data row — data rows contain commas) to the smallest power of
+    two >= max(row count, 16384) before the tree is built. Every inclusion
+    path is the same constant length, so a proof reveals nothing about
+    corpus size. Path verification is identical for both constructions.
 - **OpenTimestamps proofs anchored in the Bitcoin blockchain.** Each meta's
   hash is committed through the OpenTimestamps calendar network into a
   Bitcoin block. Proof-of-work makes the commitment practically impossible

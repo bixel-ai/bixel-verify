@@ -36,7 +36,16 @@ import { gunzipSync } from "node:zlib";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const SUPPORTED_MERKLE_SPEC = "rfc6962-sha256/csv-data-rows-v1";
+// v1: leaves = the manifest CSV's data rows, in file order.
+// v2 (2026-07-14): same RFC 6962 tree, but the leaf set is PADDED with copies
+// of the literal string "bixel:pad:v2" to the smallest power of two >=
+// max(row_count, 16384) before the tree is built, so inclusion-path length is
+// constant and reveals nothing about corpus size. Path verification (below)
+// is identical for both — padding changes tree construction, not the walk.
+const SUPPORTED_MERKLE_SPECS = [
+  "rfc6962-sha256/csv-data-rows-v1",
+  "rfc6962-sha256/csv-data-rows-v2",
+];
 
 const sha256 = (...parts) => {
   const h = createHash("sha256");
@@ -94,8 +103,8 @@ function verifyContent(bundle, rawPath) {
 
 function verifyInclusion(bundle, meta) {
   const p = bundle.inclusion_proof;
-  if (p.merkle_spec !== SUPPORTED_MERKLE_SPEC) {
-    return fail("INCLUSION", `unknown merkle spec "${p.merkle_spec}" (this tool implements ${SUPPORTED_MERKLE_SPEC})`);
+  if (!SUPPORTED_MERKLE_SPECS.includes(p.merkle_spec)) {
+    return fail("INCLUSION", `unknown merkle spec "${p.merkle_spec}" (this tool implements ${SUPPORTED_MERKLE_SPECS.join(", ")})`);
   }
   // Leaf sanity: the manifest row must reference the capture this bundle claims.
   if (!p.leaf.startsWith(`${bundle.capture.id},`)) {
@@ -212,8 +221,9 @@ async function runBundle(label, raw, rawPath, skipNetwork) {
 if (has("--self-test")) {
   const here = dirname(fileURLToPath(import.meta.url));
   const vectors = [
-    "pricing-model.page-capture.json",
-    "stack-nextjs.crawl-snapshot.json",
+    "pricing-model.page-capture.json",           // csv-data-rows-v1 (pre-2026-07-14 bundles)
+    "stack-nextjs.crawl-snapshot.json",          // csv-data-rows-v1
+    "pricing-model.page-capture.v2-padded.json", // csv-data-rows-v2 (constant-depth padded)
   ];
   let ok = true;
   for (const v of vectors) {
