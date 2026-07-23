@@ -18,8 +18,14 @@ requests to bixel.com. You should not have to trust Bixel to check Bixel.
 curl -s https://api.bixel.com/v1/companies/pinecone.io/facts/pricing.model/proof/ \
   | npx bixel-verify -
 
-# with the raw captured bytes (completes step 1)
-npx bixel-verify bundle.json --raw capture.html.gz
+# with the raw captured bytes (completes step 1) — download them yourself:
+#   the bundle's capture.raw.fetch_url serves the archived bytes to any
+#   API key, free tier included (one capture per request)
+BIXEL_API_KEY=bx_... npx bixel-verify bundle.json --fetch
+
+# or hand it a file you already downloaded (plain or the stored .gz —
+# gzip is detected by magic bytes)
+npx bixel-verify bundle.json --raw capture.html
 
 # fully offline (skips the OpenTimestamps network check)
 npx bixel-verify bundle.json --skip-anchor

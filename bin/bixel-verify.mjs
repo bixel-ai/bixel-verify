@@ -65,8 +65,13 @@ const valueOf = (f) => {
 };
 
 if (has("--help") || (args.length === 0 && process.stdin.isTTY)) {
-  console.log("usage: bixel-verify <bundle.json | -> [--raw <file>] [--skip-anchor]");
+  console.log("usage: bixel-verify <bundle.json | -> [--raw <file>] [--fetch] [--skip-anchor]");
   console.log("       bixel-verify --self-test");
+  console.log("");
+  console.log("  --raw <file>  the capture's bytes: either the stored .gz or the plain");
+  console.log("                download from the bundle's capture.raw.fetch_url");
+  console.log("  --fetch       download the bytes from capture.raw.fetch_url yourself");
+  console.log("                (reads BIXEL_API_KEY from the environment — any tier's key)");
   process.exit(args.length === 0 ? 1 : 0);
 }
 
@@ -81,15 +86,24 @@ const fail = (step, msg) => {
 };
 const note = (step, msg) => console.log(`  … ${step.padEnd(9)} ${msg}`);
 
-function verifyContent(bundle, rawPath) {
+function verifyContent(bundle, rawPath, fetchedBytes) {
   const cap = bundle.capture;
-  if (!rawPath) {
-    note("CONTENT", "no --raw file supplied — skipped (the proof still binds the recorded hash below)");
+  if (!rawPath && !fetchedBytes) {
+    note(
+      "CONTENT",
+      cap.raw?.fetch_url
+        ? "no raw bytes supplied — skipped (download them: --fetch, or curl the bundle's capture.raw.fetch_url with your API key)"
+        : "no --raw file supplied — skipped (the proof still binds the recorded hash below)"
+    );
     return;
   }
-  const bytes = readFileSync(rawPath);
+  const bytes = fetchedBytes ?? readFileSync(rawPath);
+  // Accept EITHER form of the same document: the stored .gz object, or the
+  // plain bytes as served by capture.raw.fetch_url (added 2026-07-23).
+  // Gzip is detected by its magic bytes, never guessed from filenames.
+  const isGzip = bytes.length > 2 && bytes[0] === 0x1f && bytes[1] === 0x8b;
   const rule = cap.raw?.hash_rule ?? "";
-  const body = /gunzip/i.test(rule) ? gunzipSync(bytes) : bytes;
+  const body = isGzip && /gunzip/i.test(rule) ? gunzipSync(bytes) : bytes;
   const digest = hex(sha256(body));
   if (digest !== cap.sha256) {
     return fail("CONTENT", `raw bytes hash to ${digest.slice(0, 16)}…, capture records ${cap.sha256.slice(0, 16)}…`);
@@ -203,7 +217,26 @@ async function runBundle(label, raw, rawPath, skipNetwork) {
   const metaBytes = Buffer.from(bundle.anchor.meta_b64, "base64");
   const meta = JSON.parse(metaBytes.toString("utf8"));
 
-  verifyContent(bundle, rawPath);
+  let fetchedBytes = null;
+  if (has("--fetch")) {
+    const url = bundle.capture?.raw?.fetch_url;
+    const key = process.env.BIXEL_API_KEY;
+    if (!url) {
+      fail("CONTENT", "--fetch: this bundle carries no capture.raw.fetch_url");
+    } else if (!key) {
+      fail("CONTENT", "--fetch needs BIXEL_API_KEY in the environment (any tier's key works — free included)");
+    } else {
+      const res = await fetch(url, { headers: { "x-api-key": key } });
+      if (!res.ok) {
+        fail("CONTENT", `--fetch: ${url} answered ${res.status}`);
+      } else {
+        fetchedBytes = Buffer.from(await res.arrayBuffer());
+        note("CONTENT", `fetched ${fetchedBytes.length} bytes from ${url}`);
+      }
+    }
+  }
+
+  verifyContent(bundle, rawPath, fetchedBytes);
   verifyInclusion(bundle, meta);
   verifyChain(meta);
   await verifyAnchor(bundle, metaBytes, skipNetwork);
