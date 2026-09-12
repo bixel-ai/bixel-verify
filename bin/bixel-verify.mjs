@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * bixel-verify — independent verifier for Bixel's evidence chain.
+ * bixel-verify: independent verifier for Bixel's evidence chain.
  *
  * Input: a proof bundle from Bixel's per-fact proof endpoint
  *   GET https://api.bixel.com/v1/companies/{domain}/facts/{key}/proof
@@ -18,7 +18,7 @@
  *                verifies through OpenTimestamps toward Bitcoin
  *
  * A passing run proves observation-at-time anchored in Bitcoin. It does NOT
- * prove Bixel's extraction of the bytes is correct — read the raw yourself.
+ * prove Bixel's extraction of the bytes is correct. Read the raw yourself.
  *
  * Usage:
  *   bixel-verify bundle.json
@@ -41,7 +41,7 @@ import { fileURLToPath } from "node:url";
 // of the literal string "bixel:pad:v2" to the smallest power of two >=
 // max(row_count, 16384) before the tree is built, so inclusion-path length is
 // constant and reveals nothing about corpus size. Path verification (below)
-// is identical for both — padding changes tree construction, not the walk.
+// is identical for both; padding changes tree construction, not the walk.
 const SUPPORTED_MERKLE_SPECS = [
   "rfc6962-sha256/csv-data-rows-v1",
   "rfc6962-sha256/csv-data-rows-v2",
@@ -71,7 +71,7 @@ if (has("--help") || (args.length === 0 && process.stdin.isTTY)) {
   console.log("  --raw <file>  the capture's bytes: either the stored .gz or the plain");
   console.log("                download from the bundle's capture.raw.fetch_url");
   console.log("  --fetch       download the bytes from capture.raw.fetch_url yourself");
-  console.log("                (reads BIXEL_API_KEY from the environment — any tier's key)");
+  console.log("                (reads BIXEL_API_KEY from the environment: any tier's key)");
   process.exit(args.length === 0 ? 1 : 0);
 }
 
@@ -92,8 +92,8 @@ function verifyContent(bundle, rawPath, fetchedBytes) {
     note(
       "CONTENT",
       cap.raw?.fetch_url
-        ? "no raw bytes supplied — skipped (download them: --fetch, or curl the bundle's capture.raw.fetch_url with your API key)"
-        : "no --raw file supplied — skipped (the proof still binds the recorded hash below)"
+        ? "no raw bytes supplied: skipped (download them: --fetch, or curl the bundle's capture.raw.fetch_url with your API key)"
+        : "no --raw file supplied: skipped (the proof still binds the recorded hash below)"
     );
     return;
   }
@@ -171,7 +171,7 @@ async function verifyAnchor(bundle, metaBytes, skipNetwork) {
     OpenTimestamps = (await import("opentimestamps")).default;
   } catch {
     // Zero-dependency fallback: the serialized proof embeds the committed
-    // digest verbatim — confirm the commitment without parsing the format.
+    // digest verbatim; confirm the commitment without parsing the format.
     const ots = Buffer.from(a.ots_b64, "base64");
     if (!ots.includes(metaSha)) {
       return fail("ANCHOR", "the .ots proof does not commit to the meta's bytes");
@@ -194,13 +194,13 @@ async function verifyAnchor(bundle, metaBytes, skipNetwork) {
       );
       const res = await OpenTimestamps.verify(detached, original);
       if (res && res.bitcoin) {
-        return pass("ANCHOR", `Bitcoin-attested${res.bitcoin.height ? ` (block ${res.bitcoin.height})` : ""} — the batch existed no later than that block`);
+        return pass("ANCHOR", `Bitcoin-attested${res.bitcoin.height ? ` (block ${res.bitcoin.height})` : ""}: the batch existed no later than that block`);
       }
       return fail("ANCHOR", "a complete proof failed Bitcoin verification");
     }
     return note("ANCHOR", "proof commits to the meta and is PENDING calendar aggregation (upgrades to Bitcoin-attested automatically; re-fetch the bundle later)");
   } catch (e) {
-    return note("ANCHOR", `commitment verified; calendar/explorer unreachable (${e.message}) — retry online for the Bitcoin check`);
+    return note("ANCHOR", `commitment verified; calendar/explorer unreachable (${e.message}): retry online for the Bitcoin check`);
   }
 }
 
@@ -210,7 +210,7 @@ async function verifyAnchor(bundle, metaBytes, skipNetwork) {
 async function runBundle(label, raw, rawPath, skipNetwork) {
   const parsed = JSON.parse(raw);
   const bundle = parsed.data ?? parsed; // accept the {data,meta} envelope or the bare bundle
-  console.log(`\nbixel-verify — ${label}`);
+  console.log(`\nbixel-verify: ${label}`);
   console.log(`  fact: ${bundle.fact.key} = ${JSON.stringify(bundle.fact.value)} (${bundle.fact.provenance}, as of ${bundle.fact.as_of})`);
   console.log(`  captured: ${bundle.capture.captured_at} from ${bundle.capture.source_url ?? "(source url on the fact)"}\n`);
 
@@ -224,7 +224,7 @@ async function runBundle(label, raw, rawPath, skipNetwork) {
     if (!url) {
       fail("CONTENT", "--fetch: this bundle carries no capture.raw.fetch_url");
     } else if (!key) {
-      fail("CONTENT", "--fetch needs BIXEL_API_KEY in the environment (any tier's key works — free included)");
+      fail("CONTENT", "--fetch needs BIXEL_API_KEY in the environment (any tier's key works: free included)");
     } else {
       const res = await fetch(url, { headers: { "x-api-key": key } });
       if (!res.ok) {
@@ -243,11 +243,11 @@ async function runBundle(label, raw, rawPath, skipNetwork) {
 
   console.log("");
   if (failures) {
-    console.error(`FAILED — ${failures} check(s) did not hold. Do not trust this bundle.`);
+    console.error(`FAILED: ${failures} check(s) did not hold. Do not trust this bundle.`);
     return false;
   }
-  console.log("VERIFIED — the raw content this bundle references was observed at the recorded time and sits in a Bitcoin-anchored, hash-chained history.");
-  console.log("Reminder: cryptography proves observation, not extraction — read the raw document to confirm what it says.");
+  console.log("VERIFIED: the raw content this bundle references was observed at the recorded time and sits in a Bitcoin-anchored, hash-chained history.");
+  console.log("Reminder: cryptography proves observation, not extraction. Read the raw document to confirm what it says.");
   return true;
 }
 
@@ -269,7 +269,7 @@ if (has("--self-test")) {
 
 const src = args.find((a) => !a.startsWith("--") && a !== valueOf("--raw"));
 if (!src) {
-  console.error("no bundle given — pass a file path or '-' for stdin (see --help)");
+  console.error("no bundle given: pass a file path or '-' for stdin (see --help)");
   process.exit(1);
 }
 const raw = src === "-" ? readFileSync(0, "utf8") : readFileSync(src, "utf8");

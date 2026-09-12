@@ -1,6 +1,6 @@
 {
   "name": "bixel-verify",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Independent verifier for Bixel's evidence chain: content, merkle inclusion, hash chain, and OpenTimestamps anchoring in the Bitcoin blockchain.",
   "license": "Apache-2.0",
   "type": "module",

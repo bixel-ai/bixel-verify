@@ -8,7 +8,7 @@ requests to bixel.com. You should not have to trust Bixel to check Bixel.
 > **Status: working.** The proof endpoint is live and this CLI verifies
 > its bundles. Zero runtime dependencies for steps 1–3; step 4's full
 > Bitcoin verification uses the standard `opentimestamps` package
-> (optional — without it the tool still confirms the proof's commitment
+> (optional; without it the tool still confirms the proof's commitment
 > and tells you how to finish the check).
 
 ## Usage
@@ -18,12 +18,12 @@ requests to bixel.com. You should not have to trust Bixel to check Bixel.
 curl -s https://api.bixel.com/v1/companies/pinecone.io/facts/pricing.model/proof/ \
   | npx bixel-verify -
 
-# with the raw captured bytes (completes step 1) — download them yourself:
+# with the raw captured bytes (completes step 1); download them yourself:
 #   the bundle's capture.raw.fetch_url serves the archived bytes to any
 #   API key, free tier included (one capture per request)
 BIXEL_API_KEY=bx_... npx bixel-verify bundle.json --fetch
 
-# or hand it a file you already downloaded (plain or the stored .gz —
+# or hand it a file you already downloaded (plain or the stored .gz;
 # gzip is detected by magic bytes)
 npx bixel-verify bundle.json --raw capture.html
 
@@ -35,7 +35,7 @@ npx bixel-verify --self-test
 ```
 
 Exit code 0 = every executed check held. The output labels each step and
-ends with the exact claim the proof supports — nothing more.
+ends with the exact claim the proof supports, nothing more.
 
 ## Getting a proof bundle
 
@@ -76,7 +76,7 @@ HTML. The trust layer underneath:
     are the manifest CSV's data rows in file order; path length ~log2(rows).
   - `rfc6962-sha256/csv-data-rows-v2` (current): the same tree, but the
     leaf set is padded with copies of the literal string `bixel:pad:v2`
-    (never a data row — data rows contain commas) to the smallest power of
+    (never a data row: data rows contain commas) to the smallest power of
     two >= max(row count, 16384) before the tree is built. Every inclusion
     path is the same constant length, so a proof reveals nothing about
     corpus size. Path verification is identical for both constructions.
