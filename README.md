@@ -13,27 +13,27 @@ requests to bixel.com. You should not have to trust Bixel to check Bixel.
 
 ## Usage
 
-Runs straight from this repository with `npx`; an npm package (`@bixel/verify`) follows.
+Published on npm as `@bixel/verify`; runs with `npx` and needs no install.
 
 ```
 # verify a bundle straight from the API
 curl -s https://api.bixel.com/v1/companies/pinecone.io/facts/pricing.model/proof/ \
-  | npx -y github:bixel-ai/bixel-verify -
+  | npx -y @bixel/verify -
 
 # with the raw captured bytes (completes step 1); download them yourself:
 #   the bundle's capture.raw.fetch_url serves the archived bytes to any
 #   API key, free tier included (one capture per request)
-BIXEL_API_KEY=bx_... npx -y github:bixel-ai/bixel-verify bundle.json --fetch
+BIXEL_API_KEY=bx_... npx -y @bixel/verify bundle.json --fetch
 
 # or hand it a file you already downloaded (plain or the stored .gz;
 # gzip is detected by magic bytes)
-npx -y github:bixel-ai/bixel-verify bundle.json --raw capture.html
+npx -y @bixel/verify bundle.json --raw capture.html
 
 # fully offline (skips the OpenTimestamps network check)
-npx -y github:bixel-ai/bixel-verify bundle.json --skip-anchor
+npx -y @bixel/verify bundle.json --skip-anchor
 
 # pinned real-world vectors, offline
-npx -y github:bixel-ai/bixel-verify --self-test
+npx -y @bixel/verify --self-test
 ```
 
 Exit code 0 = every executed check held. The output labels each step and

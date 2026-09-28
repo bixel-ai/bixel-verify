@@ -1,0 +1,24 @@
+# Release: publish @bixel/verify to npm with trusted publishing (OIDC, no token).
+# Trigger: a GitHub release, or the manual button. npm must list this repo +
+# this workflow file as the package's trusted publisher (npmjs.com → package →
+# Settings → Trusted Publisher: bixel-ai/bixel-verify, publish.yml).
+name: publish
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - run: npm install -g npm@latest
+      - run: node bin/bixel-verify.mjs --self-test
+      - run: npm publish --access public --provenance
