@@ -1,6 +1,6 @@
 # Release: STAGE @bixel/verify on npm with trusted publishing (OIDC, no token; npm >= 11.5.1).
 # The staged version goes live only after a maintainer approves it on npmjs.com
-# (or `npm stage approve` with 2FA) — the trusted publisher allows stage only.
+# (or `npm stage approve` with 2FA); the trusted publisher allows stage only.
 # Trigger: a GitHub release, or the manual button. npm must list this repo +
 # this workflow file as the package's trusted publisher (npmjs.com → package →
 # Settings → Trusted Publisher: bixel-ai/bixel-verify, publish.yml).
